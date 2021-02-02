@@ -1,12 +1,26 @@
 #### GeekBots
 
+# Oneclass 
+
 `An application for all your educational needs.`
 
-- Team Members
-    - Harsh Thakur
-    - Pranav Gawade
-    - Himanshu Kumar Maurya
-    - Shagun Attri
+### Devlopment Setup Instructions
+   1. Open command promt window and run the following command - <br/>
+        `npm i -g firebase-tools`
+   2. Navigate to /edu_functions/functions directory and install all dependances - <br/>
+        `npm install`
+   3. Run the following command to start a local backend devlopment server - <br/>
+        `npm run serve`
+   4. Navigate to /edu_client directory and install all dependances - <br/>
+        `npm install`
+   5. Run the following command to start a local client development server - <br/>
+        `npm start`
+
+### Team Members
+   - Harsh Thakur
+   - Pranav Gawade
+   - Himanshu Kumar Maurya
+   - Shagun Attri
 
 ### Problem Statement
 
