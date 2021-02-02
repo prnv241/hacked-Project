@@ -1,43 +1,52 @@
-const functions = require('firebase-functions');
-const { getLessonsInfo, getLesson, getModule, newModule, uploadModule, checkResults, markRead, getResult } = require('./handlers/lessons');
-const { getAssignInfo, getAssgn } = require('./handlers/assignments');
-const { ssignup, llogin } = require('./handlers/users');
-const authMiddleware = require('./util/isloggedin');
+const functions = require("firebase-functions");
+const {
+  getLessonsInfo,
+  getLesson,
+  getModule,
+  newModule,
+  uploadModule,
+  checkResults,
+  markRead,
+  getResult,
+} = require("./handlers/lessons");
+const { getAssignInfo, getAssgn } = require("./handlers/assignments");
+const { ssignup, llogin } = require("./handlers/users");
+const authMiddleware = require("./util/isloggedin");
 
-const express = require('express');
+const express = require("express");
 const app = express();
 
 app.use((req, res, next) => {
-  res.append('Access-Control-Allow-Origin', ['*']);
-  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.append('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.append("Access-Control-Allow-Origin", ["*"]);
+  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.append("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
 
-//Lessons 
+//Lessons
 
-app.get('/lessons', authMiddleware, getLessonsInfo);
+app.get("/lessons", getLessonsInfo);
 
-app.get('/assignments', authMiddleware, getAssignInfo);
+app.get("/assignments", getAssignInfo);
 
-app.post('/module/upload', authMiddleware, uploadModule);
+app.post("/module/upload", uploadModule);
 
-app.get('/module/quizes/:ref/result', authMiddleware, getResult);
+app.get("/module/quizes/:ref/result", getResult);
 
-app.post('/module/quizes/:chapId/:ref', authMiddleware, checkResults);
+app.post("/module/quizes/:chapId/:ref", checkResults);
 
-app.post('/module/new/:chapId', authMiddleware, newModule);
+app.post("/module/new/:chapId", newModule);
 
-app.get('/lessons/:lessonId', authMiddleware, getLesson);
+app.get("/lessons/:lessonId", getLesson);
 
-app.get('/assignments/:assgnId', authMiddleware, getAssgn);
+app.get("/assignments/:assgnId", getAssgn);
 
-app.get('/module/:type/:chapId/:ref', authMiddleware, getModule);
+app.get("/module/:type/:chapId/:ref", getModule);
 
-app.post('/module/:type/:chapId/:ref', authMiddleware, markRead);
+app.post("/module/:type/:chapId/:ref", markRead);
 
-app.post('/ssignup', ssignup);
+app.post("/ssignup", ssignup);
 
-app.post('/login', llogin);
+app.post("/login", llogin);
 
 exports.api = functions.https.onRequest(app);
