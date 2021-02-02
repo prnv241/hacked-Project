@@ -19,6 +19,7 @@ import showAssign from "./pages/showAssign";
 import writtenAssignment from "./pages/writtenAssignment";
 import quizSubmission from "./pages/quizSubmission";
 import assignmentSubmission from "./pages/assignmentSubmission";
+import analysisList from "./pages/analysisList";
 
 axios.defaults.baseURL =
   "http://localhost:5001/interndemo-25232/us-central1/api/";
@@ -58,6 +59,7 @@ function App() {
             path="/assinments/written/:id/submissions"
             component={assignmentSubmission}
           />
+          <Route exact path="/analysis" component={analysisList} />
           <Redirect to="/login" />
         </Switch>
       </BrowserRouter>
