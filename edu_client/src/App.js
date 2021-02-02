@@ -17,6 +17,8 @@ import newModule from "./pages/newModule";
 import quizres from "./pages/quizres";
 import showAssign from "./pages/showAssign";
 import writtenAssignment from "./pages/writtenAssignment";
+import quizSubmission from "./pages/quizSubmission";
+import assignmentSubmission from "./pages/assignmentSubmission";
 
 axios.defaults.baseURL =
   "http://localhost:5001/interndemo-25232/us-central1/api/";
@@ -45,6 +47,16 @@ function App() {
             exact
             path="/assinments/written/:id"
             component={writtenAssignment}
+          />
+          <Route
+            exact
+            path="/assinments/quizes/:id/submissions"
+            component={quizSubmission}
+          />
+          <Route
+            exact
+            path="/assinments/written/:id/submissions"
+            component={assignmentSubmission}
           />
           <Redirect to="/login" />
         </Switch>

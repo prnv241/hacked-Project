@@ -16,7 +16,7 @@ const mapDispatchToProps = {
   getAssgn,
 };
 
-export class showAssign extends Component {
+export class WrittenAssignment extends Component {
   //   componentDidMount() {
   //     this.props.getAssgn(this.props.match.params.assgnId);
   //   }
@@ -67,4 +67,4 @@ export class showAssign extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(showAssign);
+export default connect(mapStateToProps, mapDispatchToProps)(WrittenAssignment);
