@@ -38,7 +38,7 @@ function App() {
           <Route exact path="/signup" component={sign} />
           <Route exact path="/lessons" component={lesson} />
           <Route exact path="/assignments" component={assignment} />
-          <Route exact path="/live" component={live} />
+          <Route exact path="/live/:id" component={live} />
           <Route exact path="/module/quizes/:ref/result" component={quizres} />
           <Route exact path="/lessons/:lessonId" component={showLesson} />
           <Route exact path="/assignments/:assgnId" component={showAssign} />
