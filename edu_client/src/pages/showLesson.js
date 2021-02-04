@@ -8,10 +8,11 @@ import Loading from '../components/Loading';
 
 const mapStateToProps = (state) => ({
   lessons: state.lessons,
+  user: state.user
 })
 
 const mapDispatchToProps = {
-  getLesson, 
+  getLesson,
 }
 
 export class showLesson extends Component {
@@ -19,18 +20,18 @@ export class showLesson extends Component {
     this.props.getLesson(this.props.match.params.lessonId);
   }
   render() {
-    const { lesson , loading } = this.props.lessons;
+    const { lesson, loading } = this.props.lessons;
 
     let chaptersMarkup = !loading ? (
       <>
         <JumboTitle title={lesson.metadata.lessonName} />
-        {lesson.chapters.map((chap) => 
-          <ChapterSlide key={chap.chapNo} chap={chap} />
+        {lesson.chapters.map((chap) =>
+          <ChapterSlide key={chap.chapNo} chap={chap} userid={this.props.user.id} />
         )}
       </>
     ) : (
-      <Loading />
-    );
+        <Loading />
+      );
     return (
       <>
         <Navbar />
@@ -41,4 +42,4 @@ export class showLesson extends Component {
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(showLesson)
+export default connect(mapStateToProps, mapDispatchToProps)(showLesson)

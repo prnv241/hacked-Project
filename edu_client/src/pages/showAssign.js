@@ -8,6 +8,7 @@ import Loading from "../components/Loading";
 
 const mapStateToProps = (state) => ({
   assignments: state.assignments,
+  user: state.user
 });
 
 const mapDispatchToProps = {
@@ -30,8 +31,8 @@ export class showAssign extends Component {
     let chaptersMarkup = !ploading ? (
       <>
         <JumboTitle title={assignment.metadata.lessonName} />
-        <ChapterSlide chap={qzs} />
-        <ChapterSlide chap={subs} />
+        <ChapterSlide chap={qzs} userid={this.props.user.id} />
+        <ChapterSlide chap={subs} userid={this.props.user.id} />
       </>
     ) : (
         <Loading />

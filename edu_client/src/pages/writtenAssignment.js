@@ -57,8 +57,8 @@ export class WrittenAssignment extends Component {
       uploading
     } = this.props.assignments;
 
-    const complited = assignment.submissions.find((as) => as.ref === this.props.match.params.id && as.complited === true);
-
+    const complited = assignment.submissions.find((as) => as.ref === this.props.match.params.id && as.complited.find((u) => u === this.props.user.id));
+    console.log(complited);
     const layout = dloading ? <Loading /> : (
       <>
         <div className="whole">

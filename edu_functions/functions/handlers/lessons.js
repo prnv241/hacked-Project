@@ -100,7 +100,7 @@ exports.newModule = (req, res) => {
     url: req.body.url
   }
   var vid = {
-    complited: false,
+    complited: [],
     name: req.body.name,
     time: req.body.time
   }
@@ -193,13 +193,13 @@ exports.checkResults = (req, res) => {
     })
     .then(body => {
       body.update({ result: results });
-      body.update({ complited: true })
+      body.update({ complited: true });
       db.doc(`/chapters/${chapId}`).get()
         .then((chap) => {
           quiz = chap.data().quiz;
           quiz.forEach((o) => {
             if (o.ref === ref) {
-              o.complited = true;
+              o.complited.push(req.user.user_id);
             }
           })
           db.doc(`/chapters/${chapId}`).update({ quiz: quiz });
@@ -232,12 +232,12 @@ exports.markRead = (req, res) => {
             videos = chap.data().videos;
             videos.forEach((o) => {
               if (o.ref === ref) {
-                o.complited = true;
+                o.complited.push(req.user.user_id);
               }
             })
             data.update({ videos: videos })
               .then(() => {
-                return res.json({ success: "Marked Complited" });
+                return res.json(chap.data());
               })
               .catch((err) => {
                 console.error(err);
@@ -256,12 +256,12 @@ exports.markRead = (req, res) => {
             reading = chap.data().reading;
             reading.forEach((o) => {
               if (o.ref === ref) {
-                o.complited = true;
+                o.complited.push(req.user.user_id);
               }
             })
             data.update({ reading: reading })
               .then(() => {
-                return res.json({ success: "Marked Complited" });
+                return res.json(chap.data());
               })
               .catch((err) => {
                 console.error(err);

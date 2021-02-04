@@ -84,7 +84,7 @@ exports.checkResAsgn = (req, res) => {
               dubs = asgn.data().quizes;
               dubs.forEach((quiz) => {
                 if (quiz.ref === ref) {
-                  quiz.complited = true;
+                  quiz.complited.push(req.user.user_id);
                 }
               })
               db.doc(`/assignments/${asgnId}`).update({ quizes: dubs });
@@ -128,7 +128,7 @@ exports.submitSub = (req, res) => {
           subs = asgn.data().submissions;
           subs.forEach((sub) => {
             if (sub.ref === subId) {
-              sub.complited = true;
+              sub.complited.push(req.user.user_id);
             }
           })
           db.doc(`/assignments/${asgnId}`).update({ submissions: subs })
@@ -249,7 +249,7 @@ exports.newAsgn = (req, res) => {
           var temp = doc.data().submissions;
           var newsub = {
             name: newAsgn.name,
-            complited: false,
+            complited: [],
             ref: data.id,
             time: newAsgn.time
           }

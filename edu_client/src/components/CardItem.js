@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles, Typography, Card, CardContent } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -40,7 +40,12 @@ const styles = {
 };
 
 function CardItem(props) {
-  const { data, type, classes, chap, mode } = props;
+  const { data, type, classes, chap, mode, userid } = props;
+  const isComplete = data.complited && data.complited.find((item) => item === userid);
+  useEffect(() => {
+    console.log(data.complited);
+    console.log(isComplete);
+  }, [isComplete, data.complited])
   const back =
     type === "Quiz"
       ? "transparent linear-gradient(54deg, #F792AB 0%, #FCE584 100%) 0% 0% no-repeat padding-box"
@@ -83,7 +88,7 @@ function CardItem(props) {
             >
               {type}{" "}
               <span className={classes.tick}>
-                {data.complited ? (
+                {isComplete ? (
                   <CheckCircleIcon
                     style={{ fill: "#00cc33", height: 20, width: 20 }}
                   />

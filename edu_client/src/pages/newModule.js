@@ -53,17 +53,18 @@ export class newModule extends Component {
   }
   handleSubmit = () => {
     var vidlink = "https://www.youtube.com/embed/" + this.state.url.split("=")[1];
+    var link = this.state.url.split('.')[1] == "youtube" ? vidlink : this.state.url;
     const vidData = {
       desc: this.state.desc,
       name: this.state.name,
       time: this.state.time,
-      url: vidlink
+      url: link
     }
     const chapId = this.props.match.params.chapId;
-    this.props.addModule(vidData, chapId); 
+    this.props.addModule(vidData, chapId);
   }
   handleUpload = (event) => {
-    if(event.target.files) {
+    if (event.target.files) {
       const file = event.target.files[0];
       const formData = new FormData();
       formData.append("video", file, file.name);
@@ -78,8 +79,8 @@ export class newModule extends Component {
     }
   }
   render() {
-    const { classes, lessons: {upload} } = this.props;
-    if(upload === false) {
+    const { classes, lessons: { upload } } = this.props;
+    if (upload === false) {
       this.props.setDefault();
       this.props.history.goBack();
     }
@@ -92,21 +93,21 @@ export class newModule extends Component {
               Add a new module
             </Typography>
             <form noValidate className={classes.contain}>
-              <TextField name="name" type="text" placeholder="Name of the video" label="Name" className={classes.TextField} value={this.state.name} onChange={this.handleChange} fullWidth/>
-              <TextField name="time" type="text" placeholder="Required time to complete" label="Time" className={classes.TextField} value={this.state.time} onChange={this.handleChange} fullWidth/>
-              <TextField name="desc" type="text" placeholder="Description of the video" label="Description" className={classes.TextField} multiline rows={4} value={this.state.desc} onChange={this.handleChange} fullWidth/>
-              <TextField name="url" type="text" placeholder="Youtube link of the video" label="Link" className={classes.TextField} value={this.state.url} onChange={this.handleChange} fullWidth/>
+              <TextField name="name" type="text" placeholder="Name of the video" label="Name" className={classes.TextField} value={this.state.name} onChange={this.handleChange} fullWidth />
+              <TextField name="time" type="text" placeholder="Required time to complete" label="Time" className={classes.TextField} value={this.state.time} onChange={this.handleChange} fullWidth />
+              <TextField name="desc" type="text" placeholder="Description of the video" label="Description" className={classes.TextField} multiline rows={4} value={this.state.desc} onChange={this.handleChange} fullWidth />
+              <TextField name="url" type="text" placeholder="Youtube link of the video" label="Link" className={classes.TextField} value={this.state.url} onChange={this.handleChange} fullWidth />
               <Typography variant="h6" className={classes.or}> OR </Typography>
               <Typography className={classes.imgtext}>
-                Upload a video 
+                Upload a video
                 <input type="file" id="FileInput" hidden="hidden" onChange={this.handleUpload} />
                 <IconButton onClick={this.handleEditFile} aria-label="delete">
-                  <AddIcon color="primary"/>
-                  {this.state.url !== '' ? <CheckCircle style={{fill: '#00cc33'}}/> : null}
+                  <AddIcon color="primary" />
+                  {this.state.url !== '' ? <CheckCircle style={{ fill: '#00cc33' }} /> : null}
                 </IconButton>
               </Typography>
               <Button variant="contained" color="primary" disabled={upload} className={classes.button} onClick={this.handleSubmit}>{upload ? (<CircularProgress size="1.6rem" />) : <span>Submit</span>}</Button>
-              <p style={{color: 'red', textAlign: 'center', paddingTop: '40', fontSize: '0.8rem'}}>(Use small sized mp4/avi clips)</p>
+              <p style={{ color: 'red', textAlign: 'center', paddingTop: '40', fontSize: '0.8rem' }}>(Use small sized mp4/avi clips)</p>
             </form>
           </div>
         </div>

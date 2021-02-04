@@ -17,7 +17,7 @@ const styles = {
 }
 
 function ChapterSlide(props) {
-  const { chap, classes } = props;
+  const { chap, classes, userid } = props;
   console.log(chap);
   const lnk = chap.chapName === "Quizes" || chap.chapName === "Submissions" ? `/assignment/new/${chap.chapId}` : `/module/new/${chap.chapId}`
   return (
@@ -34,10 +34,10 @@ function ChapterSlide(props) {
           </span>
         </Typography>
         <Grid container>
-          {chap.videos ? chap.videos.map((vid, index) => <CardItem key={index} data={vid} type="Video" chap={chap.chapId} />) : null}
-          {chap.reading ? chap.reading.map((read, index) => <CardItem key={index} data={read} type="Reading" chap={chap.chapId} />) : null}
-          {chap.quiz ? chap.quiz.map((que, index) => <CardItem key={index} data={que} type="Quiz" chap={chap.chapId} mode={chap.chapName === "Quizes"} />) : null}
-          {chap.submissions ? chap.submissions.map((que, index) => <CardItem key={index} data={que} type="Submission" chap={chap.chapId} />) : null}
+          {chap.videos ? chap.videos.map((vid, index) => <CardItem key={index} data={vid} type="Video" chap={chap.chapId} userid={userid} />) : null}
+          {chap.reading ? chap.reading.map((read, index) => <CardItem key={index} data={read} type="Reading" chap={chap.chapId} userid={userid} />) : null}
+          {chap.quiz ? chap.quiz.map((que, index) => <CardItem key={index} data={que} type="Quiz" chap={chap.chapId} mode={chap.chapName === "Quizes"} userid={userid} />) : null}
+          {chap.submissions ? chap.submissions.map((que, index) => <CardItem key={index} data={que} type="Submission" chap={chap.chapId} userid={userid} />) : null}
         </Grid>
       </div>
     </div>

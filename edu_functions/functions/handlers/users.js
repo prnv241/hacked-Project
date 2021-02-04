@@ -5,11 +5,13 @@ exports.ssignup = (req, res) => {
     const email = req.body.email;
     const name = req.body.name;
     const role = req.body.role;
+    const rollno = req.body.rollno;
     const newuser = {
         id: id,
         name: name,
         email: email,
-        role: role
+        role: role,
+        rollno: rollno
     }
     db.doc(`/users/${id}`).create(newuser)
         .then((doc) => {
@@ -29,7 +31,8 @@ exports.llogin = (req, res) => {
                 id: localId,
                 name: doc.data().name,
                 email: doc.data().email,
-                role: doc.data().role
+                role: doc.data().role,
+                rollno: doc.data().rollno,
             }
             res.status(200).json(udata);
         }).catch((err) => {

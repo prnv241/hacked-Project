@@ -38,12 +38,12 @@ const styles = {
 export class moduleShow extends Component {
 
   componentWillReceiveProps(newProps) {
-    if (this.props.match.params !== newProps.match.params ) {
+    if (this.props.match.params !== newProps.match.params) {
       console.log("Hey I updated!");
       let type = newProps.match.params.type;
       let chapId = newProps.match.params.chapId;
       let ref = newProps.match.params.ref;
-      this.props.getModule(type,chapId,ref);
+      this.props.getModule(type, chapId, ref);
     }
   }
 
@@ -51,24 +51,38 @@ export class moduleShow extends Component {
     let type = this.props.match.params.type;
     let chapId = this.props.match.params.chapId;
     let ref = this.props.match.params.ref;
-    this.props.getModule(type,chapId,ref);
+    this.props.getModule(type, chapId, ref);
   }
   handleRead = () => {
     let type = this.props.match.params.type;
     let chapId = this.props.match.params.chapId;
     let ref = this.props.match.params.ref;
-    this.props.markRead(type,chapId,ref);
+    let les = this.props.lessons.lesson.lessonId;
+    this.props.markRead(type, chapId, ref, les);
   }
   render() {
     const { classes } = this.props;
-    const { module, mloading } = this.props.lessons; 
-    let moduleMarkup; 
-    if( mloading ) {
+    const { module, mloading } = this.props.lessons;
+    var iscomplited = false;
+    var chapter = this.props.lessons.lesson.chapters.find((chap) => chap.chapId === this.props.match.params.chapId);
+    console.log(chapter);
+    var quiz = chapter.quiz.find((qu) => qu.ref === this.props.match.params.ref);
+    var reading = chapter.reading.find((re) => re.ref === this.props.match.params.ref);
+    var videos = chapter.videos.find((vi) => vi.ref === this.props.match.params.ref);
+    console.log(quiz, reading, videos, this.props.match.params.ref);
+    if (quiz || reading || videos) {
+      if (quiz && quiz.complited.find((i) => this.props.user.id === i)) { iscomplited = true; console.log(this.props.user.id, iscomplited); }
+      if (reading && reading.complited.find((i) => this.props.user.id === i)) { iscomplited = true; console.log(this.props.user.id, iscomplited); }
+      if (videos && videos.complited.find((i) => this.props.user.id === i)) { iscomplited = true; console.log(this.props.user.id, iscomplited); }
+
+    }
+    let moduleMarkup;
+    if (mloading) {
       moduleMarkup = (<Loading />)
-    } else if(this.props.match.params.type === 'quizes') {
+    } else if (this.props.match.params.type === 'quizes') {
       console.log(module);
-      moduleMarkup = (<QuizModule module={module}/>)
-    } else if(!mloading) {
+      moduleMarkup = (<QuizModule module={module} />)
+    } else if (!mloading) {
       moduleMarkup = (<div className="container">
         <Grid container spacing={8}>
           <Grid item xs={12} md={8}>
@@ -93,17 +107,17 @@ export class moduleShow extends Component {
                 <Typography variant="body2">
                   {module.data.time}
                 </Typography>
-                { module.data.complited ? (<span className={classes.button}>Completed <CheckCircleIcon style={{fill: '#00cc33', height:20, width:20}} /></span>) : (<Button variant="contained" color="primary" className={classes.button} onClick={this.handleRead}>Mark as Complete</Button>)}
+                {iscomplited ? (<span className={classes.button}>Completed <CheckCircleIcon style={{ fill: '#00cc33', height: 20, width: 20 }} /></span>) : (<Button variant="contained" color="primary" className={classes.button} onClick={this.handleRead}>Mark as Complete</Button>)}
               </div>
             </div>
           </Grid>
         </Grid>
         <ChapterSlide chap={module.chapter} />
-      </div>) 
+      </div>)
     }
     return (
       <>
-        <Navbar/>
+        <Navbar />
         <div>
           {moduleMarkup}
         </div>
@@ -113,7 +127,8 @@ export class moduleShow extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  lessons: state.lessons
+  lessons: state.lessons,
+  user: state.user
 })
 
 const mapDispatchToProps = {

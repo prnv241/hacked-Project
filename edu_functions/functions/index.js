@@ -25,42 +25,42 @@ app.use((req, res, next) => {
 
 //Lessons
 
-app.get("/lessons", getLessonsInfo);
+app.get("/lessons", authMiddleware, getLessonsInfo);
 
-app.get("/assignments", getAssignInfo);
+app.get("/assignments", authMiddleware, getAssignInfo);
 
-app.post("/module/upload", uploadModule);
+app.post("/module/upload", authMiddleware, uploadModule);
 
-app.get("/module/quizes/:ref/result", getResult);
+app.get("/module/quizes/:ref/result", authMiddleware, getResult);
 
-app.post("/module/quizes/:chapId/:ref", checkResults);
+app.post("/module/quizes/:chapId/:ref", authMiddleware, checkResults);
 
-app.post("/module/new/:chapId", newModule);
+app.post("/module/new/:chapId", authMiddleware, newModule);
 
-app.post("/assignment/new/:asgnId", newAsgn);
+app.post("/assignment/new/:asgnId", authMiddleware, newAsgn);
 
-app.get("/lessons/:lessonId", getLesson);
+app.get("/lessons/:lessonId", authMiddleware, getLesson);
 
-app.get("/assignments/:assgnId", getAssgn);
+app.get("/assignments/:assgnId", authMiddleware, getAssgn);
 
-app.get("/module/:type/:chapId/:ref", getModule);
+app.get("/module/:type/:chapId/:ref", authMiddleware, getModule);
 
-app.post("/module/:type/:chapId/:ref", markRead);
+app.post("/module/:type/:chapId/:ref", authMiddleware, markRead);
 
 app.post("/ssignup", ssignup);
 
 app.post("/login", llogin);
 
-app.get("/written/:asgnId/:subId", getSub);
+app.get("/written/:asgnId/:subId", authMiddleware, getSub);
 
-app.get("/quiz/:ref/:userId/result", getAsgnQuizRes);
+app.get("/quiz/:ref/:userId/result", authMiddleware, getAsgnQuizRes);
 
-app.get("/quiz/:asgnId/:ref", getQuizModule);
+app.get("/quiz/:asgnId/:ref", authMiddleware, getQuizModule);
 
-app.post("/written/:asgnId/:subId", submitSub);
+app.post("/written/:asgnId/:subId", authMiddleware, submitSub);
 
-app.post("/quiz/:asgnId/:ref", checkResAsgn);
+app.post("/quiz/:asgnId/:ref", authMiddleware, checkResAsgn);
 
-app.post("/written/upload", uploadSub);
+app.post("/written/upload", authMiddleware, uploadSub);
 
 exports.api = functions.https.onRequest(app);

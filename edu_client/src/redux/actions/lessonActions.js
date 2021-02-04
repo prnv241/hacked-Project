@@ -94,10 +94,10 @@ export const getResult = (ref, mode) => (dispatch) => {
     })
 }
 
-export const markRead = (type, chapId, ref) => (dispatch) => {
+export const markRead = (type, chapId, ref, les) => (dispatch) => {
   axios.post(`/module/${type}/${chapId}/${ref}`)
     .then(() => {
-      dispatch(getModule(type, chapId, ref));
+      dispatch(getLesson(les));
     })
     .catch(err => {
       console.log(err);
