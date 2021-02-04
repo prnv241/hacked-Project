@@ -8,6 +8,7 @@ import Loading from "../components/Loading";
 import "./writtenAssignment.css";
 import Loading2 from "../components/logload";
 import CheckCircle from "@material-ui/icons/CheckCircle";
+import Graph from "../components/Chart";
 
 const mapStateToProps = (state) => ({
   assignments: state.assignments,
@@ -124,6 +125,7 @@ export class WrittenAssignment extends Component {
           <div>Average Score : 88</div>
         </div>
         {/* {layout} */}
+        <Graph />
       </>
     );
   }
