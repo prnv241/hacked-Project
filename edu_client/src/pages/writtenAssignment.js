@@ -3,65 +3,88 @@ import Navbar from "../components/Navbar";
 import Button from "@material-ui/core/Button";
 import JumboTitle from "../components/JumboTitle";
 import { connect } from "react-redux";
-import { getAssgn } from "../redux/actions/assgnActions";
-import ChapterSlide from "../components/ChapterSlide";
+import { getSub, uploadSub, submitSub } from "../redux/actions/assgnActions";
 import Loading from "../components/Loading";
 import "./writtenAssignment.css";
+import Loading2 from '../components/logload';
+import CheckCircle from '@material-ui/icons/CheckCircle'
 
 const mapStateToProps = (state) => ({
   assignments: state.assignments,
+  user: state.user
 });
 
 const mapDispatchToProps = {
-  getAssgn,
+  getSub, uploadSub, submitSub
 };
 
 export class WrittenAssignment extends Component {
-  //   componentDidMount() {
-  //     this.props.getAssgn(this.props.match.params.assgnId);
-  //   }
+  componentDidMount() {
+    this.props.getSub(this.props.match.params.asgnId, this.props.match.params.id);
+  }
+
+  handleEditFile = () => {
+    const fileInput = document.getElementById("FileInput");
+
+    fileInput.click();
+  };
+
+  handleSubmit = () => {
+    var form = {
+      userId: this.props.user.id,
+      studName: this.props.user.name,
+      name: this.props.assignments.submission.name,
+      rollno: this.props.user.rollno,
+      url: this.props.assignments.url
+    }
+    this.props.submitSub(form, this.props.match.params.asgnId, this.props.match.params.id, this.props.history);
+  }
+
+  handleUpload = (event) => {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append("video", file, file.name);
+      this.props.uploadSub(formData);
+    }
+  }
   render() {
     const {
+      submission,
       assignment,
-      loading: { ploading },
+      loading: { dloading },
+      upload,
+      uploading
     } = this.props.assignments;
 
-    let chaptersMarkup = !ploading ? (
+    const complited = assignment.submissions.find((as) => as.ref === this.props.match.params.id && as.complited === true);
+
+    const layout = dloading ? <Loading /> : (
       <>
-        <JumboTitle title={assignment.metadata.lessonName} />
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
-      </>
-    ) : (
-      <Loading />
-    );
-    return (
-      <>
-        <Navbar />
-        <JumboTitle title={"Assignment Name"} />
         <div className="whole">
-          <div>Marks :</div>
-          <div> 10 </div>
-          <div></div>
-          <div>Deadline :</div>
-          <div>Date to be added</div>
+          <div>Marks :  10</div>
+          <div>Deadline :  12-02-21</div>
         </div>
         <div className="description">
           <div style={{ fontWeight: "bold" }}>Description</div>
-          <div style={{ marginTop: "1rem" }}>To be added description</div>
+          <div style={{ marginTop: "1rem" }}>{submission.desc}</div>
         </div>
         <div className="submit">
-          <Button variant="contained">Upload</Button>
-          <Button variant="contained" color="primary">
-            Submit
+          <Button variant="contained" disabled={upload || complited} onClick={this.handleEditFile}>{
+            uploading ? <Loading2 /> : "UPLOAD"
+          }</Button> {upload || complited ? <CheckCircle style={{ fill: '#00cc33' }} /> : null}
+          <input type="file" id="FileInput" hidden="hidden" onChange={this.handleUpload} />
+          <Button variant="contained" color="primary" onClick={this.handleSubmit} disabled={!upload || complited}>
+            SUBMIT
           </Button>
         </div>
+      </>
+    )
+    return (
+      <>
+        <Navbar />
+        <JumboTitle title={submission.name} />
+        {layout}
       </>
     );
   }

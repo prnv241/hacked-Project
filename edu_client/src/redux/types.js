@@ -43,3 +43,23 @@ export const SIGNUP_LOADING = "SIGNUP_LOADING";
 export const SIGNUP_USER = "SIGNUP_USER";
 
 export const LOGOUT_USER = "LOGOUT_USER";
+
+export const SUB_LOADING = "SUB_LOADING";
+
+export const GET_SUB = "GET_SUB";
+
+export const UPLOADING_SUB = "UPLOADING_SUB";
+
+export const SUB_UPLOADED = "SUB_UPLOADED";
+
+export const SUBMIT_SUB = "SUBMIT_SUB";
+
+export const QUIZ_LOADING = "QUIZ_LOADING";
+
+export const GET_QUIZ = "GET_QUIZ";
+
+export const ASGNRES_LOADING = "ASGNRES_LOADING";
+
+export const ASGNRES_LOADED = "ASGNRES_LOADED";
+
+export const CREATE_SUB = "CREATE_SUB";

@@ -30,7 +30,7 @@ export const getLesson = (lessonId) => (dispatch) => {
 }
 
 
-export const getModule = (type,chapId,ref) => (dispatch) => {
+export const getModule = (type, chapId, ref) => (dispatch) => {
   dispatch({ type: ActionTypes.MODULE_LOADING });
   axios.get(`/module/${type}/${chapId}/${ref}`)
     .then((res) => {
@@ -46,7 +46,7 @@ export const getModule = (type,chapId,ref) => (dispatch) => {
 
 export const uploadFile = (formData) => (dispatch) => {
   dispatch({ type: ActionTypes.UPLOADING_FILE });
-  axios.post(`/module/upload`, formData )
+  axios.post(`/module/upload`, formData)
     .then((res) => {
       dispatch({ type: ActionTypes.SET_URL, payload: res.data.fileUrl });
     })
@@ -67,9 +67,9 @@ export const addModule = (vidData, chapId) => (dispatch) => {
     })
 }
 
-export const submitQuiz = (chapId, ref, quizAns) => (dispatch) =>{
+export const submitQuiz = (chapId, ref, quizAns) => (dispatch) => {
   dispatch({ type: ActionTypes.RESULTS_LOADING });
-  axios.post(`/module/quizes/${chapId}/${ref}`, {quizAns: quizAns})
+  axios.post(`/module/quizes/${chapId}/${ref}`, { quizAns: quizAns })
     .then(res => {
       dispatch({
         type: ActionTypes.LOADED_RESULTS
@@ -80,8 +80,9 @@ export const submitQuiz = (chapId, ref, quizAns) => (dispatch) =>{
     })
 }
 
-export const getResult = (ref) => (dispatch) => {
-  axios.get(`/module/quizes/${ref}/result`)
+export const getResult = (ref, mode) => (dispatch) => {
+  var lnk = mode ? `/quiz/${ref}/${mode}/result` : `/module/quizes/${ref}/result`;
+  axios.get(lnk)
     .then(res => {
       dispatch({
         type: ActionTypes.SET_RESULTS,
@@ -93,10 +94,10 @@ export const getResult = (ref) => (dispatch) => {
     })
 }
 
-export const markRead = (type,chapId,ref) => (dispatch) => {
+export const markRead = (type, chapId, ref) => (dispatch) => {
   axios.post(`/module/${type}/${chapId}/${ref}`)
     .then(() => {
-      dispatch(getModule(type,chapId,ref));
+      dispatch(getModule(type, chapId, ref));
     })
     .catch(err => {
       console.log(err);

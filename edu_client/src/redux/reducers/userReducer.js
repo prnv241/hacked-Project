@@ -6,6 +6,7 @@ const initialState = {
     name: '',
     email: '',
     role: '',
+    rollno: '',
     auth: false
 };
 
@@ -24,6 +25,7 @@ export default function (state = initialState, action) {
                 name: action.payload.name,
                 email: action.payload.email,
                 role: action.payload.role,
+                rollno: action.payload.rollno,
                 loading: false,
                 auth: true
             }
@@ -41,6 +43,7 @@ export default function (state = initialState, action) {
                 name: action.payload.name,
                 email: action.payload.email,
                 role: action.payload.role,
+                rollno: action.payload.rollno,
                 loading: false,
                 auth: true
             }
@@ -52,6 +55,7 @@ export default function (state = initialState, action) {
                 name: '',
                 email: '',
                 role: '',
+                roleno: '',
                 auth: false
             }
         default:

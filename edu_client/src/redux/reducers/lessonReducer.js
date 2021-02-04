@@ -14,8 +14,8 @@ const initialState = {
   url: null,
 };
 
-export default function(state = initialState, action) {
-  switch(action.type) {
+export default function (state = initialState, action) {
+  switch (action.type) {
     case ActionTypes.GET_LESSONS:
       return {
         ...state,
@@ -23,17 +23,17 @@ export default function(state = initialState, action) {
         sloading: false,
       }
     case ActionTypes.LESSONS_LOADING:
-      return{
+      return {
         ...state,
         sloading: true
       }
     case ActionTypes.LESSON_LOADING:
-      return{
+      return {
         ...state,
         loading: true
       }
     case ActionTypes.MODULE_LOADING:
-      return{
+      return {
         ...state,
         mloading: true
       }
@@ -83,12 +83,12 @@ export default function(state = initialState, action) {
         ...state,
         rloading: true
       }
-    case ActionTypes.LOADED_RESULTS: 
+    case ActionTypes.LOADED_RESULTS:
       return {
         ...state,
         rloading: false
       }
-    default :
+    default:
       return state;
   }
 }

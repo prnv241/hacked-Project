@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography, Button } from '@material-ui/core';
 import { submitQuiz } from '../redux/actions/lessonActions';
+import { subAsgnQuiz } from '../redux/actions/assgnActions';
 import { withRouter } from "react-router-dom"
 import QuizCard from '../components/QuizCard';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Loading from '../components/Loading';
- 
+
 const styles = {
   screen: {
     backgroundColor: '#f0f0f0',
@@ -29,7 +29,7 @@ const styles = {
     paddingLeft: 60
   },
   quizbox: {
-    marginTop:20,
+    marginTop: 20,
     backgroundColor: '#f0f0f0',
     overflowY: 'scroll',
     height: '60vh',
@@ -49,7 +49,7 @@ export class QuizModule extends Component {
     quizAns: [],
   }
 
-  setans = (id,ans) => {
+  setans = (id, ans) => {
     var ansobj = {
       id: id,
       ans: ans
@@ -68,9 +68,9 @@ export class QuizModule extends Component {
     setInterval(() => {
       const { seconds, minutes } = this.state
       if (seconds > 0) {
-          this.setState(({ seconds }) => ({
-              seconds: seconds - 1
-          }))
+        this.setState(({ seconds }) => ({
+          seconds: seconds - 1
+        }))
       }
       if (seconds === 0) {
         if (minutes === 0) {
@@ -84,69 +84,83 @@ export class QuizModule extends Component {
             seconds: 59
           }))
         }
-      } 
+      }
     }, 1000);
   }
   handleSubmit = () => {
-    var quizAns = this.state.quizAns;
-    let chapId = this.props.match.params.chapId;
-    let ref = this.props.match.params.ref;
-    this.props.submitQuiz(chapId,ref,quizAns);
+    if (this.props.mode) {
+      let asgnId = this.props.match.params.asgnId;
+      var quizAns = this.state.quizAns;
+      let ref = this.props.match.params.id;
+      var form = {
+        userId: this.props.user.id,
+        studName: this.props.user.name,
+        name: this.props.assignments.submission.name,
+        rollno: this.props.user.rollno,
+        quizId: ref
+      }
+      this.props.subAsgnQuiz(asgnId, ref, quizAns, form);
+    } else {
+      var quizAns = this.state.quizAns;
+      let chapId = this.props.match.params.chapId;
+      let ref = this.props.match.params.ref;
+      this.props.submitQuiz(chapId, ref, quizAns);
+    }
   }
   componentDidUpdate() {
-    let ref = this.props.match.params.ref;
-    if(this.props.lessons.rloading === false){
-      this.props.history.push(`/module/quizes/${ref}/result`);
+    let ref = this.props.match.params.id;
+    if (this.props.lessons.rloading === false || this.props.assignments.rloading === false) {
+      var lnk = this.props.lessons.rloading === false ? `/module/quizes/${ref}/result` : `/assinments/quiz/${ref}/result`;
+      this.props.history.push(lnk);
     }
   }
   render() {
     const { minutes, seconds, started } = this.state;
-    const { classes, lessons: { rloading, mloading } } = this.props;
+    const Rloading = this.props.lessons.rloading != null ? this.props.lessons.rloading : this.props.assignments.rloading;
+    const { classes } = this.props;
     const { data, chapter } = this.props.module;
     let time = !started ? (
-      <span style={{color: 'red', fontSize: '1.2rem'}}>Times up!</span>
+      <span style={{ color: 'red', fontSize: '1.2rem' }}>Times up!</span>
     ) : (
-      <span style={{fontSize: '1.2rem'}}>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</span>
-    );
-    let button = ( <Button variant="contained" color="primary" className="buttons" style={{marginTop: 0}} onClick={this.startTimer}>Start Test</Button> )
+        <span style={{ fontSize: '1.2rem' }}>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</span>
+      );
+    let button = (<Button variant="contained" color="primary" className="buttons" style={{ marginTop: 0 }} onClick={this.startTimer}>Start Test</Button>)
     let timerMarkup = started === true || started === null ? time : button;
     return (
       <>
-      { mloading ? (
-        <Loading />
-      ) : (
         <div className={classes.screen}>
-        <div className={classes.upperbox}>
-          <Typography className={classes.chapname}>{chapter.chapName}
-            <span className={classes.timer}>
-              {timerMarkup}
-            </span>
-          </Typography>
-          <Typography className={classes.quizname}>{data.name}</Typography>
-          { started || started === null ? ( 
+          <div className={classes.upperbox}>
+            <Typography className={classes.chapname}>{chapter.chapName}
+              <span className={classes.timer}>
+                {timerMarkup}
+              </span>
+            </Typography>
+            <Typography className={classes.quizname}>{data.name}</Typography>
+            {started || started === null ? (
               <div className={classes.timer} >
-                <Button variant="contained" color="primary" disabled={rloading} onClick={this.handleSubmit}>{ rloading ? (<CircularProgress size="1.6rem"/> ) : <span>Submit</span> }</Button>
-              </div> ) : null
-          }
-        </div>
-        { started === false || started === null ? null : (
-          <div className={classes.quizbox} >
-            {data.questions.map((question) => <QuizCard key={question.id} setans={this.setans} question={question}/>)}
+                <Button variant="contained" color="primary" disabled={Rloading} onClick={this.handleSubmit}>{Rloading ? (<CircularProgress size="1.6rem" />) : <span>Submit</span>}</Button>
+              </div>) : null
+            }
           </div>
-        )}
-      </div> 
-      )}
+          {started === false || started === null ? null : (
+            <div className={classes.quizbox} >
+              {data.questions.map((question) => <QuizCard key={question.id} setans={this.setans} question={question} />)}
+            </div>
+          )}
+        </div>
       </>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  lessons: state.lessons
+  lessons: state.lessons,
+  assignments: state.assignments,
+  user: state.user
 })
 
 const mapDispatchToProps = {
-  submitQuiz
+  submitQuiz, subAsgnQuiz
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(QuizModule)));

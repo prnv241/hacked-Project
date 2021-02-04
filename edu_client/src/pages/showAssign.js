@@ -23,22 +23,19 @@ export class showAssign extends Component {
       assignment,
       loading: { ploading },
     } = this.props.assignments;
-
+    console.log(assignment);
+    let chapId = this.props.match.params.assgnId ? this.props.match.params.assgnId : assignment.chapId;
+    const qzs = { quiz: assignment.quizes, chapName: "Quizes", chapId: chapId };
+    const subs = { submissions: assignment.submissions, chapName: "Submissions", chapId: chapId };
     let chaptersMarkup = !ploading ? (
       <>
         <JumboTitle title={assignment.metadata.lessonName} />
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
+        <ChapterSlide chap={qzs} />
+        <ChapterSlide chap={subs} />
       </>
     ) : (
-      <Loading />
-    );
+        <Loading />
+      );
     return (
       <>
         <Navbar />

@@ -40,20 +40,30 @@ const styles = {
 };
 
 function CardItem(props) {
-  const { data, type, classes, chap } = props;
+  const { data, type, classes, chap, mode } = props;
   const back =
     type === "Quiz"
       ? "transparent linear-gradient(54deg, #F792AB 0%, #FCE584 100%) 0% 0% no-repeat padding-box"
       : "white";
   let lnk;
   if (type === "Quiz") {
-    if (data.complited) {
-      lnk = `/module/quizes/${data.ref}/result`;
+    if (mode) {
+      if (data.complited) {
+        lnk = `/assinments/quiz/${data.ref}/result`;
+      } else {
+        lnk = `/assinments/quiz/${chap}/${data.ref}`
+      }
     } else {
-      lnk = `/module/quizes/${chap}/${data.ref}`;
+      if (data.complited) {
+        lnk = `/module/quizes/${data.ref}/result`;
+      } else {
+        lnk = `/module/quizes/${chap}/${data.ref}`;
+      }
     }
   } else if (type === "Video") {
     lnk = `/module/videos/${chap}/${data.ref}`;
+  } else if (type === "Submission") {
+    lnk = `/assinments/written/${chap}/${data.ref}`
   } else {
     lnk = `/module/readings/${chap}/${data.ref}`;
   }
@@ -78,8 +88,8 @@ function CardItem(props) {
                     style={{ fill: "#00cc33", height: 20, width: 20 }}
                   />
                 ) : (
-                  <FiberManualRecordIcon style={{ fill: "#f5f5f5" }} />
-                )}
+                    <FiberManualRecordIcon style={{ fill: "#f5f5f5" }} />
+                  )}
               </span>
             </Typography>
             <img alt="logo" src={Img} className={classes.image} />

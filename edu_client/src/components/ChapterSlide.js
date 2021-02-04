@@ -18,23 +18,26 @@ const styles = {
 
 function ChapterSlide(props) {
   const { chap, classes } = props;
+  console.log(chap);
+  const lnk = chap.chapName === "Quizes" || chap.chapName === "Submissions" ? `/assignment/new/${chap.chapId}` : `/module/new/${chap.chapId}`
   return (
     <div>
       <div className="container">
         <Typography variant="body2" color="primary" className={classes.title}>
           <strong>{chap.chapName}</strong>
           <span className={classes.Add}>
-            <Link to={`/module/new/${chap.chapId}`} >
+            <Link to={lnk} >
               <IconButton aria-label="delete">
-                <AddIcon color="primary"/>
+                <AddIcon color="primary" />
               </IconButton>
             </Link>
           </span>
         </Typography>
         <Grid container>
-          {chap.videos.map((vid,index) => <CardItem key={index} data={vid} type="Video" chap={chap.chapId}/>)}
-          {chap.reading.map((read,index) => <CardItem key={index} data={read} type="Reading" chap={chap.chapId}/>)}
-          {chap.quiz.map((que,index) => <CardItem key={index} data={que} type="Quiz" chap={chap.chapId}/>)}
+          {chap.videos ? chap.videos.map((vid, index) => <CardItem key={index} data={vid} type="Video" chap={chap.chapId} />) : null}
+          {chap.reading ? chap.reading.map((read, index) => <CardItem key={index} data={read} type="Reading" chap={chap.chapId} />) : null}
+          {chap.quiz ? chap.quiz.map((que, index) => <CardItem key={index} data={que} type="Quiz" chap={chap.chapId} mode={chap.chapName === "Quizes"} />) : null}
+          {chap.submissions ? chap.submissions.map((que, index) => <CardItem key={index} data={que} type="Submission" chap={chap.chapId} />) : null}
         </Grid>
       </div>
     </div>

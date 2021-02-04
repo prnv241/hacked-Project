@@ -9,7 +9,7 @@ const {
   markRead,
   getResult,
 } = require("./handlers/lessons");
-const { getAssignInfo, getAssgn } = require("./handlers/assignments");
+const { getAssignInfo, getAssgn, getSub, submitSub, uploadSub, getQuizModule, checkResAsgn, getAsgnQuizRes, newAsgn } = require("./handlers/assignments");
 const { ssignup, llogin } = require("./handlers/users");
 const authMiddleware = require("./util/isloggedin");
 
@@ -37,6 +37,8 @@ app.post("/module/quizes/:chapId/:ref", checkResults);
 
 app.post("/module/new/:chapId", newModule);
 
+app.post("/assignment/new/:asgnId", newAsgn);
+
 app.get("/lessons/:lessonId", getLesson);
 
 app.get("/assignments/:assgnId", getAssgn);
@@ -48,5 +50,17 @@ app.post("/module/:type/:chapId/:ref", markRead);
 app.post("/ssignup", ssignup);
 
 app.post("/login", llogin);
+
+app.get("/written/:asgnId/:subId", getSub);
+
+app.get("/quiz/:ref/:userId/result", getAsgnQuizRes);
+
+app.get("/quiz/:asgnId/:ref", getQuizModule);
+
+app.post("/written/:asgnId/:subId", submitSub);
+
+app.post("/quiz/:asgnId/:ref", checkResAsgn);
+
+app.post("/written/upload", uploadSub);
 
 exports.api = functions.https.onRequest(app);
