@@ -5,6 +5,13 @@
   font-size: 20px;
   justify-content: space-around;
 }
+.grade {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  justify-content: space-around;
+}
 
 .description {
   margin-top: 2rem;

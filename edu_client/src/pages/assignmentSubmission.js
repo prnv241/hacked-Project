@@ -27,39 +27,71 @@ const rows = [
   createData("Gingerbread", 356, 16.0, "file", 49),
 ];
 
-const mapStateToProps = (state) => ({
-  assignments: state.assignments,
-});
+function objectsToCSV(arr) {
+  const array = [Object.keys(arr[0])].concat(arr);
+  return array
+    .map((row) => {
+      return Object.values(row)
+        .map((value) => {
+          return typeof value === "string" ? JSON.stringify(value) : value;
+        })
+        .toString();
+    })
+    .join("\n");
+}
 
-const mapDispatchToProps = {
-  getAssgn,
+const csv = objectsToCSV(rows);
+console.log("csv", csv);
+
+const download = (filename, text) => {
+  var element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
 };
 
-export class Submission extends Component {
+// const mapStateToProps = (state) => ({
+//   assignments: state.assignments,
+// });
+
+// const mapDispatchToProps = {
+//   getAssgn,
+// };
+
+export class AssignmentSubmission extends Component {
   //   componentDidMount() {
   //     this.props.getAssgn(this.props.match.params.assgnId);
   //   }
   render() {
-    const {
-      assignment,
-      loading: { ploading },
-    } = this.props.assignments;
+    // const {
+    //   assignment,
+    //   loading: { ploading },
+    // } = this.props.assignments;
 
-    let chaptersMarkup = !ploading ? (
-      <>
-        <JumboTitle title={assignment.metadata.lessonName} />
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
-      </>
-    ) : (
-      <Loading />
-    );
+    // let chaptersMarkup = !ploading ? (
+    //   <>
+    //     <JumboTitle title={assignment.metadata.lessonName} />
+    //     {assignment.chapters.map((chap) => {
+    //       console.log(chap);
+    //       return <ChapterSlide key={chap.chapNo} chap={chap} />;
+    //     })}
+    //     {assignment.chapters.map((chap) => {
+    //       console.log(chap);
+    //       return <ChapterSlide key={chap.chapNo} chap={chap} />;
+    //     })}
+    //   </>
+    // ) : (
+    //   <Loading />
+    // );
 
     return (
       <>
@@ -72,7 +104,9 @@ export class Submission extends Component {
             flexDirection: "row-reverse",
           }}
         >
-          <Button variant="contained">Download</Button>
+          <Button onClick={() => download("file.csv", csv)} variant="contained">
+            Download
+          </Button>
         </div>
         <div style={{ margin: "2rem" }}>
           <TableContainer component={Paper}>
@@ -129,4 +163,9 @@ export class Submission extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Submission);
+export default AssignmentSubmission;
+
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(AssignmentSubmission);

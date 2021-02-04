@@ -13,6 +13,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+// import ObjectToCSV from "object-to-csv";
 
 function createData(name, rollNo, date, marks) {
   return { name, rollNo, date, marks };
@@ -26,6 +27,24 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49),
 ];
 
+// console.log("rows", rows);
+
+function objectsToCSV(arr) {
+  const array = [Object.keys(arr[0])].concat(arr);
+  return array
+    .map((row) => {
+      return Object.values(row)
+        .map((value) => {
+          return typeof value === "string" ? JSON.stringify(value) : value;
+        })
+        .toString();
+    })
+    .join("\n");
+}
+
+const csv = objectsToCSV(rows);
+console.log("csv", csv);
+
 const mapStateToProps = (state) => ({
   assignments: state.assignments,
 });
@@ -34,7 +53,23 @@ const mapDispatchToProps = {
   getAssgn,
 };
 
-export class Submission extends Component {
+const download = (filename, text) => {
+  var element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+};
+
+export class QuizSubmission extends Component {
   //   componentDidMount() {
   //     this.props.getAssgn(this.props.match.params.assgnId);
   //   }
@@ -71,7 +106,9 @@ export class Submission extends Component {
             flexDirection: "row-reverse",
           }}
         >
-          <Button variant="contained">Download</Button>
+          <Button onClick={() => download("file.csv", csv)} variant="contained">
+            Download
+          </Button>
         </div>
         <div style={{ margin: "2rem" }}>
           <TableContainer component={Paper}>
@@ -112,4 +149,4 @@ export class Submission extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Submission);
+export default connect(mapStateToProps, mapDispatchToProps)(QuizSubmission);
