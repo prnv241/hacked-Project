@@ -44,13 +44,16 @@ export class Navbar extends Component {
               >
                 Logout
               </Button>
-              <Button
-                color="inherit"
-                className="mr-3 border"
-                style={{ textTransform: "none" }}
-              >
-                Select Class
-              </Button>
+              {this.props.user.role === "Teacher" ? (
+                <Button
+                  color="inherit"
+                  className="mr-3 border"
+                  style={{ textTransform: "none" }}
+                  onClick={() => this.props.history.push("/analysis")}
+                >
+                  View Class
+                </Button>
+              ) : null}
             </div>
           </Toolbar>
         </AppBar>
