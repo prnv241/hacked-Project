@@ -1,23 +1,29 @@
+//Require Packages
+
 require('dotenv').config();
-const {
-  getLessonsInfo,
-  getLesson,
-  getModule,
-  newModule,
-  uploadModule,
-  checkResults,
-  markRead,
-  getResult,
-} = require("./handlers/lessons");
-const { getAssignInfo, getAssgn, getSub, submitSub, uploadSub, getQuizModule, checkResAsgn, getAsgnQuizRes, newAsgn, getquizsub, getsubsub, getStudList, updateMarks } = require("./handlers/assignments");
+const { getLessonsInfo, getLesson, getModule, newModule, uploadModule, checkResults, markRead, getResult } = require("./handlers/lessons");
+const { getAssignInfo, getAssgn, getSub, submitSub, uploadSub, getLivelist, createLive, getQuizModule, checkResAsgn, getAsgnQuizRes, newAsgn, getquizsub, getsubsub, getStudList, updateMarks } = require("./handlers/assignments");
 const { ssignup, llogin } = require("./handlers/users");
 const authMiddleware = require("./util/isloggedin");
 const bodyParser = require("body-parser");
 
+
+//Initialize Packages
+
 const express = require("express");
 const app = express();
+const server = require(`http`).Server(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+//User Settings
 
 app.use(bodyParser.json());
+
+//CORS
 
 app.use((req, res, next) => {
   res.append("Access-Control-Allow-Origin", ["*"]);
@@ -26,9 +32,13 @@ app.use((req, res, next) => {
   next();
 });
 
-//Lessons
+//Route Handlers
 
 app.get("/api/lessons", authMiddleware, getLessonsInfo);
+
+app.get("/api/live", authMiddleware, getLivelist);
+
+app.post("/api/live", authMiddleware, createLive);
 
 app.get("/api/assignments", authMiddleware, getAssignInfo);
 
@@ -74,6 +84,7 @@ app.get("/api/analysis/studlist", getStudList);
 
 app.post("/api/written/upload", authMiddleware, uploadSub);
 
+//Production Script
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 
@@ -83,8 +94,24 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+//Socket Com
+io.on("connection", (socket) => {
+  console.log("Hello");
+  socket.on("join-room", (roomId, userId) => {
+    socket.join(roomId);
+    console.log(userId);
+    socket.to(roomId).broadcast.emit("user-connected", userId);
+
+    socket.on("disconnect", () => {
+      socket.to(roomId).broadcast.emit("user-disconnected", userId);
+    });
+  });
+});
+
+//Listen server
+
 const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server Started on PORT ${PORT}`);
 });

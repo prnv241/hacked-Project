@@ -163,3 +163,31 @@ export const getStuds = () => (dispatch) => {
       console.log(err);
     })
 }
+
+export const getLives = () => (dispatch) => {
+  dispatch({ type: ActionTypes.LIVE_LOADING });
+  axios.get(`/live`)
+    .then(res => {
+      dispatch({
+        type: ActionTypes.GET_LIVE,
+        payload: res.data
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
+export const createLive = (data, history) => (dispatch) => {
+  axios.post(`/live`, data)
+    .then(res => {
+      dispatch({
+        type: ActionTypes.CREATE_LIVE,
+        payload: res.data
+      });
+      history.push(`/live/${data.uid}`)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}

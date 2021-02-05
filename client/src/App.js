@@ -26,8 +26,9 @@ import analysisList from "./pages/analysisList";
 import asgnquizres from "./pages/asgnquizres";
 import newAsgn from "./pages/addAssignment";
 import studentAnalysis from "./pages/studentAnalysis";
+import livePage from './pages/livePage';
 
-axios.defaults.baseURL = "http://localhost:5001/api";
+axios.defaults.baseURL = "http://192.168.0.104:5001/api";
 // "http://localhost:5001/interndemo-25232/us-central1/api/";
 // axios.defaults.baseURL = 'https://us-central1-interndemo-25232.cloudfunctions.net/api';
 
@@ -63,6 +64,7 @@ function App() {
           <Route exact path="/lessons" component={lesson} />
           <Route exact path="/assignments" component={assignment} />
           <Route exact path="/live" component={live} />
+          <Route exact path="/live/:id" component={livePage} />
           <Route exact path="/module/quizes/:ref/result" component={quizres} />
           <Route exact path="/lessons/:lessonId" component={showLesson} />
           <Route exact path="/assignments/:assgnId" component={showAssign} />

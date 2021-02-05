@@ -22,6 +22,8 @@ const initialState = {
   quiz: {},
   studs: [],
   rloading: null,
+  lloading: true,
+  lives: []
 };
 
 export default function (state = initialState, action) {
@@ -203,6 +205,25 @@ export default function (state = initialState, action) {
           ...state.loading,
           jloading: false
         }
+      }
+
+    case ActionTypes.LIVE_LOADING:
+      return {
+        ...state,
+        lloading: true,
+      }
+
+    case ActionTypes.GET_LIVE:
+      return {
+        ...state,
+        lives: action.payload,
+        lloading: false,
+      }
+
+    case ActionTypes.CREATE_LIVE:
+      return {
+        ...state,
+        lives: action.payload,
       }
 
     default:

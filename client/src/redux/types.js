@@ -77,3 +77,9 @@ export const UPDATE_MARKS = "UPDATE_MARKS";
 export const STUDS_LOADING = "STUDS_LOADING";
 
 export const STUDS_LOADED = "STUDS_LOADED";
+
+export const LIVE_LOADING = "LIVE_LOADING";
+
+export const GET_LIVE = "GET_LIVE";
+
+export const CREATE_LIVE = "CREATE_LIVE";

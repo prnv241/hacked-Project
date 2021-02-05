@@ -372,3 +372,26 @@ exports.getStudList = (req, res) => {
     })
     .catch(err => console.log(err));
 }
+
+exports.getLivelist = (req, res) => {
+  var liveList = [];
+  db.collection('lives').get()
+    .then(data => {
+      data.docs.forEach((doc) => {
+        liveList.push(doc.data());
+      })
+      return res.json(liveList);
+    })
+    .catch(err => console.log(err));
+}
+
+exports.createLive = (req, res) => {
+  var uid = req.body.uid;
+  var userId = req.body.userId;
+  var name = req.body.name;
+  db.collection('lives').add({ uid, userId, name })
+    .then(doc => {
+      return res.json({ uid, userId, name });
+    })
+    .catch(err => console.log(err));
+}
