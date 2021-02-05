@@ -1,26 +1,28 @@
 #### GeekBots
 
-# Oneclass 
+# Oneclass
 
 `An application for all your educational needs.`
 
 ### Devlopment Setup Instructions
-   1. Open command promt window and run the following command - <br/>
-        `npm i -g firebase-tools`
-   2. Navigate to /edu_functions/functions directory and install all dependances - <br/>
-        `npm install`
-   3. Run the following command to start a local backend devlopment server - <br/>
-        `npm run serve`
-   4. Navigate to /edu_client directory and install all dependances - <br/>
-        `npm install`
-   5. Run the following command to start a local client development server - <br/>
-        `npm start`
+
+1.  Open command promt window and run the following command - <br/>
+    `npm i -g firebase-tools`
+2.  Install all dependances - <br/>
+    `npm install`
+3.  Run the following command to start a local backend devlopment server - <br/>
+    `node index.js`
+4.  Navigate to /client directory and install all dependances - <br/>
+    `npm install`
+5.  Run the following command to start a local client development server - <br/>
+    `npm start`
 
 ### Team Members
-   - Harsh Thakur
-   - Pranav Gawade
-   - Himanshu Kumar Maurya
-   - Shagun Attri
+
+- Harsh Thakur
+- Pranav Gawade
+- Himanshu Kumar Maurya
+- Shagun Attri
 
 ### Problem Statement
 
@@ -42,13 +44,13 @@ Microsoft Teams has taken over the market right now as it provides a lot of thes
 
 ### Proposed Tech-Stack For the Solution
 
-- `Application Type:`  Web Application
-- `Front-end:`   React, Redux(State-management)
-- `Back-end:`   Firebase Cloud Functions (Serverless)
-- `DBMS (Database Management System):`  Firebase Cloud Firestore
-- `Hosting:`   Firebase Web Application Hosting
-- `Machine Learning Model:`   Python with Flask/Django for API
-- `Model Hosting:`   Heroku
+- `Application Type:` Web Application
+- `Front-end:` React, Redux(State-management)
+- `Back-end:` Firebase Cloud Functions (Serverless)
+- `DBMS (Database Management System):` Firebase Cloud Firestore
+- `Hosting:` Firebase Web Application Hosting
+- `Machine Learning Model:` Python with Flask/Django for API
+- `Model Hosting:` Heroku
 
 ### Methodology of Implementation
 
@@ -59,6 +61,7 @@ Microsoft Teams has taken over the market right now as it provides a lot of thes
 - Clean up and Polish
 
 ### Block Diagram of the Solution (WorkFlow)
+
 ![Screenshot from 2021-01-28 21-53-09](https://user-images.githubusercontent.com/29366864/106558585-045b2700-654a-11eb-8a47-0995bcf3eb16.png)
 
 ### Identified issues or Show Stoppers
@@ -68,4 +71,3 @@ Microsoft Teams has taken over the market right now as it provides a lot of thes
 - Ensuring intuitive UI/UX
 - Addressing limited internet connectivity
 - Creating easy adoption process
-
