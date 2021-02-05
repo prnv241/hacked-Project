@@ -7,6 +7,7 @@ import { getSub, uploadSub, submitSub } from "../redux/actions/assgnActions";
 import Loading from "../components/Loading";
 import "./writtenAssignment.css";
 import Loading2 from "../components/logload";
+import Graph from "../components/Chart";
 import CheckCircle from "@material-ui/icons/CheckCircle";
 
 const mapStateToProps = (state) => ({
@@ -124,6 +125,7 @@ export class WrittenAssignment extends Component {
           <div>Average Score : 88</div>
         </div>
         {/* {layout} */}
+        <Graph />
       </>
     );
   }
