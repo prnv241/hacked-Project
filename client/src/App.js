@@ -27,8 +27,8 @@ import asgnquizres from "./pages/asgnquizres";
 import newAsgn from "./pages/addAssignment";
 import studentAnalysis from "./pages/studentAnalysis";
 
-axios.defaults.baseURL =
-  "http://localhost:5001/interndemo-25232/us-central1/api/";
+axios.defaults.baseURL = "http://localhost:5001/api";
+// "http://localhost:5001/interndemo-25232/us-central1/api/";
 // axios.defaults.baseURL = 'https://us-central1-interndemo-25232.cloudfunctions.net/api';
 
 let token = localStorage.token;
@@ -37,7 +37,7 @@ if (token) {
   console.log(Date.now(), decoded.exp)
   if (Date.now() < decoded.exp * 1000) {
     axios.defaults.headers.common['Authorization'] = token;
-    axios.post('http://localhost:5001/interndemo-25232/us-central1/api/login', {
+    axios.post('/login', {
       localId: decoded.user_id
     }).then(resdata => {
       store.dispatch({

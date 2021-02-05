@@ -13,7 +13,7 @@ export const loginUser = (email, password, history) => (dispatch) => {
       axios.defaults.headers.common['Authorization'] = token;
       localStorage.setItem("token", token);
       console.log(axios.defaults.headers.common['Authorization']);
-      axios.post('http://localhost:5001/interndemo-25232/us-central1/api/login', {
+      axios.post('/login', {
         localId: res.data.localId
       }).then(resdata => {
         dispatch({
@@ -43,7 +43,7 @@ export const signUser = (email, password, name, role, history) => (dispatch) => 
       axios.defaults.headers.common['Authorization'] = token;
       localStorage.setItem("token", token);
       console.log("ERE");
-      axios.post('http://localhost:5001/interndemo-25232/us-central1/api/ssignup', {
+      axios.post('/ssignup', {
         id: res.data.localId,
         name: name,
         role: role,

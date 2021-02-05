@@ -1,6 +1,5 @@
 const { db, admin } = require('../util/admin');
 const { v4: uuid } = require('uuid');
-const config = require('../util/config');
 
 exports.getAssignInfo = (req, res) => {
   db.collection('assignments').get()
@@ -181,7 +180,7 @@ exports.uploadSub = (req, res) => {
         },
       })
       .then(() => {
-        const FileUri = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${FileName}?alt=media&token=${generatedToken}`;
+        const FileUri = `https://firebasestorage.googleapis.com/v0/b/${process.env.STORAGE_BUCKET}/o/${FileName}?alt=media&token=${generatedToken}`;
         return res.json({ fileUrl: FileUri });
       })
       .catch((err) => {

@@ -68,6 +68,9 @@ export class login extends Component {
       this.props.history
     );
   };
+  componentDidUpdate() {
+    if (this.props.user.auth === true) this.props.history.push('/lessons');
+  }
   render() {
     const {
       classes,
@@ -76,16 +79,16 @@ export class login extends Component {
     const load = loading ? (
       <Loading />
     ) : (
-      <Button
-        variant="contained"
-        color="primary"
-        className="buttons"
-        id="but"
-        onClick={this.logUser}
-      >
-        Login
-      </Button>
-    );
+        <Button
+          variant="contained"
+          color="primary"
+          className="buttons"
+          id="but"
+          onClick={this.logUser}
+        >
+          Login
+        </Button>
+      );
     return (
       <div className="login-background">
         <AppBar color="inherit" id="navbar-primary">
