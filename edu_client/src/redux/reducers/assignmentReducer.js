@@ -1,3 +1,4 @@
+import store from '../store';
 import * as ActionTypes from '../types';
 
 const initialState = {
@@ -9,11 +10,17 @@ const initialState = {
     ploading: true,
     dloading: true,
     gloading: true,
+    qloading: true,
+    sloading: true,
+    jloading: true,
   },
+  quizsubs: {},
+  subsubs: {},
   upload: false,
   uploading: null,
   url: null,
   quiz: {},
+  studs: [],
   rloading: null,
 };
 
@@ -130,6 +137,71 @@ export default function (state = initialState, action) {
         assignment: {
           ...state.assignment,
           submissions: action.payload
+        }
+      }
+
+    case ActionTypes.QUIZSUB_LOADING:
+      return {
+        ...state,
+        loading: {
+          ...state.loading,
+          qloading: true
+        }
+      }
+
+    case ActionTypes.SUBSUB_LOADING:
+      return {
+        ...state,
+        loading: {
+          ...state.loading,
+          sloading: true
+        }
+      }
+
+    case ActionTypes.QUIZSUB_LOADED:
+      return {
+        ...state,
+        quizsubs: action.payload,
+        loading: {
+          ...state.loading,
+          qloading: false
+        },
+      }
+
+    case ActionTypes.SUBSUB_LOADED:
+      return {
+        ...state,
+        subsubs: action.payload,
+        loading: {
+          ...state.loading,
+          sloading: false
+        },
+      }
+
+    case ActionTypes.UPDATE_MARKS:
+      var newSub = state.subsubs;
+      newSub[action.payload.ind].marks = action.payload.marks;
+      return {
+        ...state,
+        subsubs: newSub
+      }
+
+    case ActionTypes.STUDS_LOADING:
+      return {
+        ...state,
+        loading: {
+          ...state.loading,
+          jloading: true
+        }
+      }
+
+    case ActionTypes.STUDS_LOADED:
+      return {
+        ...state,
+        studs: action.payload,
+        loading: {
+          ...state.loading,
+          jloading: false
         }
       }
 

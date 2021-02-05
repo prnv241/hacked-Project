@@ -4,7 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography, Button } from '@material-ui/core';
 import { submitQuiz } from '../redux/actions/lessonActions';
 import { subAsgnQuiz } from '../redux/actions/assgnActions';
-import { withRouter } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 import QuizCard from '../components/QuizCard';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -124,7 +124,7 @@ export class QuizModule extends Component {
     ) : (
         <span style={{ fontSize: '1.2rem' }}>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</span>
       );
-    let button = (<Button variant="contained" color="primary" className="buttons" style={{ marginTop: 0 }} onClick={this.startTimer}>Start Test</Button>)
+    let button = this.props.user.role === "Teacher" ? (<Link to={`/assinments/quizes/${this.props.match.params.id}/submissions`}><Button variant="contained" color="primary" className="buttons" style={{ marginTop: 0 }}>View Submissions</Button></Link>) : (<Button variant="contained" color="primary" className="buttons" style={{ marginTop: 0 }} onClick={this.startTimer}>Start Test</Button>)
     let timerMarkup = started === true || started === null ? time : button;
     return (
       <>

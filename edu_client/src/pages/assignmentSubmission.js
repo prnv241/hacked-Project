@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Button from "@material-ui/core/Button";
 import JumboTitle from "../components/JumboTitle";
 import { connect } from "react-redux";
-import { getAssgn } from "../redux/actions/assgnActions";
+import { getsubsubs, updateMarks } from "../redux/actions/assgnActions";
 import ChapterSlide from "../components/ChapterSlide";
 import Loading from "../components/Loading";
 import Table from "@material-ui/core/Table";
@@ -14,18 +14,19 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
+import SubRow from '../components/subRow';
 
-function createData(name, rollNo, date, file, marks) {
-  return { name, rollNo, date, file, marks };
-}
+// function createData(name, rollNo, date, file, marks) {
+//   return { name, rollNo, date, file, marks };
+// }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, "file", 24),
-  createData("Ice cream sandwich", 237, 9.0, "file", 37),
-  createData("Eclair", 262, 16.0, "file", 24),
-  createData("Cupcake", 305, 37, "file", 67),
-  createData("Gingerbread", 356, 16.0, "file", 49),
-];
+// const rows = [
+//   createData("Frozen yoghurt", 159, 6.0, "file", 24),
+//   createData("Ice cream sandwich", 237, 9.0, "file", 37),
+//   createData("Eclair", 262, 16.0, "file", 24),
+//   createData("Cupcake", 305, 37, "file", 67),
+//   createData("Gingerbread", 356, 16.0, "file", 49),
+// ];
 
 function objectsToCSV(arr) {
   const array = [Object.keys(arr[0])].concat(arr);
@@ -39,9 +40,6 @@ function objectsToCSV(arr) {
     })
     .join("\n");
 }
-
-const csv = objectsToCSV(rows);
-console.log("csv", csv);
 
 const download = (filename, text) => {
   var element = document.createElement("a");
@@ -59,44 +57,41 @@ const download = (filename, text) => {
   document.body.removeChild(element);
 };
 
-// const mapStateToProps = (state) => ({
-//   assignments: state.assignments,
-// });
+const mapStateToProps = (state) => ({
+  assignments: state.assignments,
+});
 
-// const mapDispatchToProps = {
-//   getAssgn,
-// };
+const mapDispatchToProps = {
+  getsubsubs, updateMarks
+};
+
 
 export class AssignmentSubmission extends Component {
-  //   componentDidMount() {
-  //     this.props.getAssgn(this.props.match.params.assgnId);
-  //   }
+  state = {
+    marks: "",
+  }
+  componentDidMount() {
+    this.props.getsubsubs(this.props.match.params.id);
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  handleSubmit = () => {
+    console.log(this.state.marks);
+  }
+
   render() {
-    // const {
-    //   assignment,
-    //   loading: { ploading },
-    // } = this.props.assignments;
-
-    // let chaptersMarkup = !ploading ? (
-    //   <>
-    //     <JumboTitle title={assignment.metadata.lessonName} />
-    //     {assignment.chapters.map((chap) => {
-    //       console.log(chap);
-    //       return <ChapterSlide key={chap.chapNo} chap={chap} />;
-    //     })}
-    //     {assignment.chapters.map((chap) => {
-    //       console.log(chap);
-    //       return <ChapterSlide key={chap.chapNo} chap={chap} />;
-    //     })}
-    //   </>
-    // ) : (
-    //   <Loading />
-    // );
-
-    return (
+    const {
+      subsubs,
+      loading: { sloading },
+    } = this.props.assignments;
+    console.log(subsubs)
+    let studMarkup = !sloading ? (
       <>
-        <Navbar />
-        <JumboTitle title={"Assignment Name"} />
         <div
           style={{
             margin: "2rem",
@@ -104,7 +99,7 @@ export class AssignmentSubmission extends Component {
             flexDirection: "row-reverse",
           }}
         >
-          <Button onClick={() => download("file.csv", csv)} variant="contained">
+          <Button onClick={() => download("file.csv", objectsToCSV(subsubs))} variant="contained">
             Download
           </Button>
         </div>
@@ -134,38 +129,26 @@ export class AssignmentSubmission extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.name}>
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="right">{row.rollNo}</TableCell>
-                    <TableCell align="right">{row.date}</TableCell>
-                    <TableCell align="right">
-                      <Button variant="contained">Download</Button>
-                    </TableCell>
-                    <TableCell align="right">
-                      <TextField id="standard-basic" label="Marks" />
-                    </TableCell>
-                    <TableCell align="right">
-                      <Button style={{ color: "green" }} variant="outlined">
-                        Done
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {subsubs.map((row, index) => <SubRow key={index} ind={index} row={row} updateMarks={this.props.updateMarks} />)}
               </TableBody>
             </Table>
           </TableContainer>
         </div>
       </>
+    ) : (
+        <Loading />
+      );
+    return (
+      <>
+        <Navbar />
+        <JumboTitle title={"Assignment Name"} />
+        {studMarkup}
+      </>
     );
   }
 }
 
-export default AssignmentSubmission;
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(AssignmentSubmission);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AssignmentSubmission);

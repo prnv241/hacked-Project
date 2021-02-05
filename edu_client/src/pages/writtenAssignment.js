@@ -8,6 +8,7 @@ import Loading from "../components/Loading";
 import "./writtenAssignment.css";
 import Loading2 from '../components/logload';
 import CheckCircle from '@material-ui/icons/CheckCircle'
+import { Link } from "react-router-dom";
 
 const mapStateToProps = (state) => ({
   assignments: state.assignments,
@@ -70,9 +71,14 @@ export class WrittenAssignment extends Component {
           <div style={{ marginTop: "1rem" }}>{submission.desc}</div>
         </div>
         <div className="submit">
-          <Button variant="contained" disabled={upload || complited} onClick={this.handleEditFile}>{
-            uploading ? <Loading2 /> : "UPLOAD"
-          }</Button> {upload || complited ? <CheckCircle style={{ fill: '#00cc33' }} /> : null}
+          {this.props.user.role === "Teacher" ? (
+            <Link to={`/assinments/written/${this.props.match.params.id}/submissions`}><Button variant="contained" color="primary" className="buttons" style={{ marginTop: 0 }}>View Submissions</Button></Link>
+          ) : (
+              <Button variant="contained" disabled={upload || complited} onClick={this.handleEditFile}>{
+                uploading ? <Loading2 /> : "UPLOAD"
+              }</Button>
+            )}
+          {upload || complited ? <CheckCircle style={{ fill: '#00cc33' }} /> : null}
           <input type="file" id="FileInput" hidden="hidden" onChange={this.handleUpload} />
           <Button variant="contained" color="primary" onClick={this.handleSubmit} disabled={!upload || complited}>
             SUBMIT

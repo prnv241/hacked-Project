@@ -71,7 +71,7 @@ export class signup extends Component {
   }
   render() {
     const { classes, user: { loading } } = this.props;
-    const load = loading ? (<Loading />) : <Button variant="contained" color="primary" className="buttons" id="but" onClick={this.signupUser} >Login</Button>
+    const load = loading ? (<Loading />) : <Button variant="contained" color="primary" className="buttons" id="but" onClick={this.signupUser} >Signup</Button>
     return (
       <div className="login-background">
         <AppBar color="inherit" id="navbar-primary">
@@ -106,7 +106,7 @@ export class signup extends Component {
               </Select>
               {load}
               <br />
-              <small>Already have an account ? signup <Link to="/signup">here</Link></small>
+              <small>Already have an account ? signup <Link to="/login">here</Link></small>
             </form>
           </Grid>
           <Grid item sm />

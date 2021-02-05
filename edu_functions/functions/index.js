@@ -9,7 +9,7 @@ const {
   markRead,
   getResult,
 } = require("./handlers/lessons");
-const { getAssignInfo, getAssgn, getSub, submitSub, uploadSub, getQuizModule, checkResAsgn, getAsgnQuizRes, newAsgn } = require("./handlers/assignments");
+const { getAssignInfo, getAssgn, getSub, submitSub, uploadSub, getQuizModule, checkResAsgn, getAsgnQuizRes, newAsgn, getquizsub, getsubsub, getStudList, updateMarks } = require("./handlers/assignments");
 const { ssignup, llogin } = require("./handlers/users");
 const authMiddleware = require("./util/isloggedin");
 
@@ -37,6 +37,8 @@ app.post("/module/quizes/:chapId/:ref", authMiddleware, checkResults);
 
 app.post("/module/new/:chapId", authMiddleware, newModule);
 
+app.post("/assignments/updatemarks", authMiddleware, updateMarks);
+
 app.post("/assignment/new/:asgnId", authMiddleware, newAsgn);
 
 app.get("/lessons/:lessonId", authMiddleware, getLesson);
@@ -60,6 +62,12 @@ app.get("/quiz/:asgnId/:ref", authMiddleware, getQuizModule);
 app.post("/written/:asgnId/:subId", authMiddleware, submitSub);
 
 app.post("/quiz/:asgnId/:ref", authMiddleware, checkResAsgn);
+
+app.get("/assignments/quiz/submissions/:id", authMiddleware, getquizsub);
+
+app.get("/assignments/sub/submissions/:id", authMiddleware, getsubsub);
+
+app.get("/analysis/studlist", getStudList);
 
 app.post("/written/upload", authMiddleware, uploadSub);
 

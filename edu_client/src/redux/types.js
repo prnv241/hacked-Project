@@ -63,3 +63,17 @@ export const ASGNRES_LOADING = "ASGNRES_LOADING";
 export const ASGNRES_LOADED = "ASGNRES_LOADED";
 
 export const CREATE_SUB = "CREATE_SUB";
+
+export const QUIZSUB_LOADING = "QUIZSUB_LOADING";
+
+export const QUIZSUB_LOADED = "QUIZSUB_LOADED";
+
+export const SUBSUB_LOADING = "SUBSUB_LOADING";
+
+export const SUBSUB_LOADED = "SUBSUB_LOADED";
+
+export const UPDATE_MARKS = "UPDATE_MARKS";
+
+export const STUDS_LOADING = "STUDS_LOADING";
+
+export const STUDS_LOADED = "STUDS_LOADED";

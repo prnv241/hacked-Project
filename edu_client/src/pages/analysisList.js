@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Button from "@material-ui/core/Button";
 import JumboTitle from "../components/JumboTitle";
 import { connect } from "react-redux";
-import { getAssgn } from "../redux/actions/assgnActions";
+import { getStuds } from "../redux/actions/assgnActions";
 import ChapterSlide from "../components/ChapterSlide";
 import Loading from "../components/Loading";
 import Table from "@material-ui/core/Table";
@@ -15,51 +15,38 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 
-function createData(name, rollNo, classs) {
-  return { name, rollNo, classs };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0),
-  createData("Ice cream sandwich", 237, 9.0),
-  createData("Eclair", 262, 16.0),
-  createData("Cupcake", 305, 37),
-  createData("Gingerbread", 356, 16.0),
-];
-
 const mapStateToProps = (state) => ({
   assignments: state.assignments,
 });
 
 const mapDispatchToProps = {
-  getAssgn,
+  getStuds,
 };
 
 export class AnalysisList extends Component {
-  //   componentDidMount() {
-  //     this.props.getAssgn(this.props.match.params.assgnId);
-  //   }
+  componentDidMount() {
+    this.props.getStuds();
+  }
   render() {
     const {
-      assignment,
-      loading: { ploading },
+      studs,
+      loading: { jloading },
     } = this.props.assignments;
 
-    let chaptersMarkup = !ploading ? (
-      <>
-        <JumboTitle title={assignment.metadata.lessonName} />
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
-      </>
-    ) : (
-      <Loading />
-    );
+    let studsMarkup = !jloading ? studs.map((row) => (
+      <TableRow key={row.name}>
+        <TableCell component="th" scope="row">
+          {row.name}
+        </TableCell>
+        <TableCell align="right">{row.rollno}</TableCell>
+        <TableCell align="right">A</TableCell>
+        <TableCell align="right">
+          <Button variant="contained" onClick={() => this.props.history.push(`/analysis/student/${row.id}`)}>Show</Button>
+        </TableCell>
+      </TableRow>
+    )) : (
+        <Loading />
+      );
 
     return (
       <>
@@ -85,18 +72,7 @@ export class AnalysisList extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.name}>
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="right">{row.rollNo}</TableCell>
-                    <TableCell align="right">{row.classs}</TableCell>
-                    <TableCell align="right">
-                      <Button variant="contained">Show</Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {studsMarkup}
               </TableBody>
             </Table>
           </TableContainer>

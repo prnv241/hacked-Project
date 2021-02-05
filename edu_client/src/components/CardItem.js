@@ -53,13 +53,13 @@ function CardItem(props) {
   let lnk;
   if (type === "Quiz") {
     if (mode) {
-      if (data.complited) {
+      if (isComplete) {
         lnk = `/assinments/quiz/${data.ref}/result`;
       } else {
         lnk = `/assinments/quiz/${chap}/${data.ref}`
       }
     } else {
-      if (data.complited) {
+      if (isComplete) {
         lnk = `/module/quizes/${data.ref}/result`;
       } else {
         lnk = `/module/quizes/${chap}/${data.ref}`;

@@ -1,6 +1,5 @@
 import * as ActionTypes from '../types';
 import axios from 'axios';
-import { } from 'react-router'
 
 export const loginUser = (email, password, history) => (dispatch) => {
   dispatch({ type: ActionTypes.LOGIN_LOADING });
@@ -12,6 +11,7 @@ export const loginUser = (email, password, history) => (dispatch) => {
     .then((res) => {
       const token = `Bearer ${res.data.idToken}`;
       axios.defaults.headers.common['Authorization'] = token;
+      localStorage.setItem("token", token);
       console.log(axios.defaults.headers.common['Authorization']);
       axios.post('http://localhost:5001/interndemo-25232/us-central1/api/login', {
         localId: res.data.localId
@@ -41,6 +41,7 @@ export const signUser = (email, password, name, role, history) => (dispatch) => 
     .then((res) => {
       const token = "Bearer " + res.data.idToken;
       axios.defaults.headers.common['Authorization'] = token;
+      localStorage.setItem("token", token);
       console.log("ERE");
       axios.post('http://localhost:5001/interndemo-25232/us-central1/api/ssignup', {
         id: res.data.localId,
@@ -65,6 +66,7 @@ export const signUser = (email, password, name, role, history) => (dispatch) => 
 
 export const logoutUser = (history) => (dispatch) => {
   axios.defaults.headers.common['Authorization'] = "";
+  localStorage.removeItem("token");
   dispatch({ type: ActionTypes.LOGOUT_USER });
   history.push('/login');
 }

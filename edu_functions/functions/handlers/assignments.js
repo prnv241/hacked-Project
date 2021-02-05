@@ -227,11 +227,20 @@ exports.getQuizModule = (req, res) => {
 exports.getAsgnQuizRes = (req, res) => {
   var ref = req.params.ref;
   var userId = req.params.userId;
-  let result;
   db.collection('quizSubs').where("userId", "==", userId).where("quizId", "==", ref).get()
-    .then((doc) => {
-      result = doc.data();
-      return res.json(result);
+    .then((data) => {
+      console.log(data.docs[0].data());
+      var resa = {
+        nocurr: data.docs[0].data().nocurr,
+        noques: data.docs[0].data().noques,
+        nosub: data.docs[0].data().nosub,
+        percent: data.docs[0].data().percent,
+        quizId: data.docs[0].data().quizId,
+        studName: data.docs[0].data().studName,
+        userId: data.docs[0].data().userId,
+        rollno: data.docs[0].data().rollno
+      }
+      return res.json(resa);
     })
     .catch((err) => {
       console.error(err);
@@ -269,4 +278,98 @@ exports.newAsgn = (req, res) => {
       console.error(err);
       return res.status(500).json({ error: err.message });
     });
+}
+
+exports.getquizsub = (req, res) => {
+  var ref = req.params.id;
+  var result = [];
+  db.collection('quizSubs').where("quizId", "==", ref).get()
+    .then((data) => {
+      console.log(data.docs.length);
+      data.docs.forEach((doc) => {
+        var resa = {
+          nocurr: doc.data().nocurr,
+          noques: doc.data().noques,
+          nosub: doc.data().nosub,
+          percent: doc.data().percent,
+          quizId: doc.data().quizId,
+          studName: doc.data().studName,
+          userId: doc.data().userId,
+          rollno: doc.data().rollno
+        }
+        result.push(resa);
+      })
+      console.log(result);
+      return res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.message });
+    });
+}
+
+
+exports.getsubsub = (req, res) => {
+  var ref = req.params.id;
+  var result = [];
+  db.collection('asgnSubs').where("subId", "==", ref).get()
+    .then((data) => {
+      data.docs.forEach((doc) => {
+        var resa = {
+          asgnId: doc.data().asgnId,
+          userId: doc.data().userId,
+          marks: doc.data().marks,
+          name: doc.data().name,
+          rollno: doc.data().rollno,
+          studName: doc.data().studName,
+          subId: doc.data().subId,
+          time: doc.data().time,
+          url: doc.data().url
+        }
+        result.push(resa);
+      })
+      return res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.message });
+    });
+}
+
+exports.updateMarks = (req, res) => {
+  var ref = req.body.ref;
+  var userId = req.body.userId;
+  var marks = req.body.marks;
+  db.collection('asgnSubs').where("userId", "==", userId).where("subId", "==", ref).get()
+    .then((data) => {
+      var id = data.docs[0].id;
+      db.doc(`/asgnSubs/${id}`).update({ marks: marks })
+        .then(doc => {
+          db.doc(`/asgnSubs/${id}`).get()
+            .then(dc => {
+              return res.json(dc.data());
+            })
+            .catch(err => console.log(err));
+        })
+        .catch((err) => {
+          console.error(err);
+          return res.status(500).json({ error: err.message });
+        });
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.message });
+    });
+}
+
+exports.getStudList = (req, res) => {
+  var studlist = [];
+  db.collection('users').where("role", "==", "Student").get()
+    .then(data => {
+      data.docs.forEach((doc) => {
+        studlist.push(doc.data());
+      })
+      return res.json(studlist);
+    })
+    .catch(err => console.log(err));
 }

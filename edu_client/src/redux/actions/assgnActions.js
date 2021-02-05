@@ -106,3 +106,60 @@ export const addSub = (data, asgnId, history) => (dispatch) => {
       console.log(err);
     })
 }
+
+export const getquizsubs = (ref) => (dispatch) => {
+  dispatch({ type: ActionTypes.QUIZSUB_LOADING });
+  axios.get(`/assignments/quiz/submissions/${ref}`)
+    .then(res => {
+      dispatch({
+        type: ActionTypes.QUIZSUB_LOADED,
+        payload: res.data
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
+export const getsubsubs = (ref) => (dispatch) => {
+  dispatch({ type: ActionTypes.SUBSUB_LOADING });
+  axios.get(`/assignments/sub/submissions/${ref}`)
+    .then(res => {
+      dispatch({
+        type: ActionTypes.SUBSUB_LOADED,
+        payload: res.data
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
+export const updateMarks = (userId, ref, marks, ind) => (dispatch) => {
+  axios.post(`/assignments/updatemarks`, { userId, ref, marks })
+    .then(res => {
+      console.log(res.data);
+      dispatch({
+        type: ActionTypes.UPDATE_MARKS,
+        payload: { marks, ind }
+      });
+      alert("Marks Updated!")
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
+export const getStuds = () => (dispatch) => {
+  dispatch({ type: ActionTypes.STUDS_LOADING });
+  axios.get(`/analysis/studlist`)
+    .then(res => {
+      dispatch({
+        type: ActionTypes.STUDS_LOADED,
+        payload: res.data
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}

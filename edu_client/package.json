@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "jwt-decode": "^3.1.2",
     "object-to-csv": "^1.0.5",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

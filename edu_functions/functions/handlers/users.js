@@ -5,14 +5,13 @@ exports.ssignup = (req, res) => {
     const email = req.body.email;
     const name = req.body.name;
     const role = req.body.role;
-    const rollno = req.body.rollno;
     const newuser = {
         id: id,
         name: name,
         email: email,
         role: role,
-        rollno: rollno
     }
+    if (req.body.rollno) newuser.rollno = req.body.rollno;
     db.doc(`/users/${id}`).create(newuser)
         .then((doc) => {
             console.log('user created');

@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Button from "@material-ui/core/Button";
 import JumboTitle from "../components/JumboTitle";
 import { connect } from "react-redux";
-import { getAssgn } from "../redux/actions/assgnActions";
+import { getquizsubs } from "../redux/actions/assgnActions";
 import ChapterSlide from "../components/ChapterSlide";
 import Loading from "../components/Loading";
 import Table from "@material-ui/core/Table";
@@ -13,19 +13,19 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-// import ObjectToCSV from "object-to-csv";
+// import ObjectToCSV from "object-to-csv"; 
 
-function createData(name, rollNo, date, marks) {
-  return { name, rollNo, date, marks };
-}
+// function createData(name, rollNo, date, marks) {
+//   return { name, rollNo, date, marks };
+// }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24),
-  createData("Ice cream sandwich", 237, 9.0, 37),
-  createData("Eclair", 262, 16.0, 24),
-  createData("Cupcake", 305, 37, 67),
-  createData("Gingerbread", 356, 16.0, 49),
-];
+// const rows = [
+//   createData("Frozen yoghurt", 159, 6.0, 24),
+//   createData("Ice cream sandwich", 237, 9.0, 37),
+//   createData("Eclair", 262, 16.0, 24),
+//   createData("Cupcake", 305, 37, 67),
+//   createData("Gingerbread", 356, 16.0, 49),
+// ];
 
 // console.log("rows", rows);
 
@@ -41,17 +41,6 @@ function objectsToCSV(arr) {
     })
     .join("\n");
 }
-
-const csv = objectsToCSV(rows);
-console.log("csv", csv);
-
-const mapStateToProps = (state) => ({
-  assignments: state.assignments,
-});
-
-const mapDispatchToProps = {
-  getAssgn,
-};
 
 const download = (filename, text) => {
   var element = document.createElement("a");
@@ -69,36 +58,27 @@ const download = (filename, text) => {
   document.body.removeChild(element);
 };
 
+const mapStateToProps = (state) => ({
+  assignments: state.assignments,
+});
+
+const mapDispatchToProps = {
+  getquizsubs,
+};
+
 export class QuizSubmission extends Component {
-  //   componentDidMount() {
-  //     this.props.getAssgn(this.props.match.params.assgnId);
-  //   }
+  componentDidMount() {
+    this.props.getquizsubs(this.props.match.params.id);
+  }
+
   render() {
     const {
-      assignment,
-      loading: { ploading },
+      quizsubs,
+      loading: { qloading },
     } = this.props.assignments;
-
-    let chaptersMarkup = !ploading ? (
+    console.log(quizsubs);
+    let quizsubslayout = !qloading ? (
       <>
-        <JumboTitle title={assignment.metadata.lessonName} />
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
-        {assignment.chapters.map((chap) => {
-          console.log(chap);
-          return <ChapterSlide key={chap.chapNo} chap={chap} />;
-        })}
-      </>
-    ) : (
-      <Loading />
-    );
-
-    return (
-      <>
-        <Navbar />
-        <JumboTitle title={"Quiz Name"} />
         <div
           style={{
             margin: "2rem",
@@ -106,7 +86,7 @@ export class QuizSubmission extends Component {
             flexDirection: "row-reverse",
           }}
         >
-          <Button onClick={() => download("file.csv", csv)} variant="contained">
+          <Button onClick={() => download("file.csv", objectsToCSV(quizsubs))} variant="contained">
             Download
           </Button>
         </div>
@@ -130,20 +110,30 @@ export class QuizSubmission extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {quizsubs.map((row) => (
                   <TableRow key={row.name}>
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {row.studName}
                     </TableCell>
-                    <TableCell align="right">{row.rollNo}</TableCell>
-                    <TableCell align="right">{row.date}</TableCell>
-                    <TableCell align="right">{row.marks}</TableCell>
+                    <TableCell align="right">{row.rollno}</TableCell>
+                    <TableCell align="right">{new Date().toDateString()}</TableCell>
+                    <TableCell align="right">{row.percent / 10}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
         </div>
+      </>
+    ) : (
+        <Loading />
+      );
+
+    return (
+      <>
+        <Navbar />
+        <JumboTitle title={"Quiz Name"} />
+        {quizsubslayout}
       </>
     );
   }
