@@ -16,8 +16,11 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "installdev": "npm install && npm install -g peerjs",
+    "installcli": "cd client && npm install",
+    "heroku-postbuild": "npm install -g peerjs && cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "author": "Pranav",
   "license": "MIT"
-}
+} 
