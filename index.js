@@ -1,6 +1,4 @@
 //Require Packages
-
-require("dotenv").config();
 const {
   getLessonsInfo,
   getLesson,
